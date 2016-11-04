@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>豆瓣数据获取</title>
+
+</head>
+<body>
+<div class="list"></div>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script>
+    $.ajax({
+        url:'https://api.douban.com/v2/movie/search',
+        type:'get',
+        dataType:'jsonp',
+        data:{
+            q:'张艺谋',
+            tag:'喜剧',
+            start:0,
+            count:10
+        },
+        jsonp:'callback',
+        success:function (data,textStatus) {
+            var content = (function () {
+                var html = '';
+                for(var i=0; i<data.subjects.length;i++){
+                    html+='<p>'+data.subjects[i].title+'</p>'
+                }
+                return html;
+            })();
+            $('.list').html(content);
+
+            //json解析与序列化test
+            var textDate = JSON.stringify(data);
+            console.log(textDate);
+            var jsonDate = JSON.parse(textDate);
+            console.log(jsonDate);
+        }
+    });
+</script>
+</body>
+</html>
